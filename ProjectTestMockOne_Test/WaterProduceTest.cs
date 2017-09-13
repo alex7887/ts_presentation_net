@@ -19,13 +19,11 @@ namespace ProjectTestMockOne_Test
         {
             FantaStore fantaStore = new FantaStore();
             Water waterOne = fantaStore.create(FANTA);
-
-
+            
             WaterProducer waterProducer = new WaterProducer();
             waterProducer.createStore(FANTA);
             Water waterTwo = waterProducer.order(FANTA);
 
-            //Debug.
             Assert.AreEqual(waterOne.Name, waterTwo.Name, "not equal water");
 
         }
