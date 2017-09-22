@@ -55,7 +55,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="WaterProducer.cs" />
     <Compile Include="WaterStore.cs" />
-    <Compile Include="WaterStore1.cs" />
     <Compile Include="WhiskyStore.cs" />
   </ItemGroup>
   <ItemGroup>
