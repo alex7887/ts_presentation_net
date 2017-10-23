@@ -72,9 +72,9 @@ namespace ProjectTestMockOne_Test
 
             Assert.AreEqual(JIN, jinResult.Name);
 
-            Water fantaResult = waterProducer.order(FANTA);
+            //Water fantaResult = waterProducer.order(FANTA);
 
-            Assert.AreEqual(FANTA, fantaResult.Name);
+           // Assert.AreEqual(FANTA, fantaResult.Name);
 
         }
 
@@ -114,7 +114,7 @@ namespace ProjectTestMockOne_Test
 
             mockJin.Verify(store => store.create(FANTA), Times.Never());
            
-            Assert.AreEqual(1000, mockWater.Object.Price);
+           // Assert.AreEqual(1000, mockWater.Object.Price);
 
         }
 
@@ -142,7 +142,7 @@ namespace ProjectTestMockOne_Test
 
             mockWater.Verify(w => w.Price, Times.Never());
             
-            Assert.AreEqual(1000, mockWater.Object.Price);
+           // Assert.AreEqual(1000, mockWater.Object.Price);
 
         }
 
@@ -172,7 +172,7 @@ namespace ProjectTestMockOne_Test
 
             Assert.AreEqual(1000, mockWater.Object.Price);
 
-            mockWater.
+            
 
         }
 
@@ -194,7 +194,7 @@ namespace ProjectTestMockOne_Test
             WaterProducer waterProducer = new WaterProducer();
             waterProducer.Stories.Add(JIN, mockJin.Object);
 
-           // Water waterResult = waterProducer.order(JIN);
+            Water waterResult = waterProducer.order(JIN);
 
             mockJin.Verify(store => store.create(FANTA), Times.Never());
 
