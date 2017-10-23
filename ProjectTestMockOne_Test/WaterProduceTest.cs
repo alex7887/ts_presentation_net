@@ -188,7 +188,7 @@ namespace ProjectTestMockOne_Test
                         
             Water waterFanta = waterProducer.order(JIN);
 
-            mockRepository.VerifyAll();
+            //mockRepository.VerifyAll(); 
             
         }
     }
