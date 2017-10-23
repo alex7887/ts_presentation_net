@@ -7,15 +7,15 @@ using Moq;
 namespace ProjectTestMockOne_Test
 {
     [TestClass]
-    public class WaterProduceTest
+    public class WaterProduceTes_Test
     {
         private const String FANTA = "fanta";
         private const String JIN = "jin";
-
         private const String ANY = "any";
 
+        //Stub, compare two objects
         [TestMethod]
-        public void testCreate_fanta_fanta()
+        public void testCreate_fanta_resultfanta()
         {
             FantaStore fantaStore = new FantaStore();
             Water waterOne = fantaStore.create(FANTA);
@@ -24,12 +24,14 @@ namespace ProjectTestMockOne_Test
             waterProducer.createStore(FANTA);
             Water waterTwo = waterProducer.order(FANTA);
 
-            Assert.AreEqual(waterOne.Name, waterTwo.Name, "not equal water");
+            //сравниваются два объекта, если значения их не равны, то выкидывается сообщение "not equal fanta"
+            Assert.AreEqual(waterOne.Name, waterTwo.Name, "not equal fanta");
 
         }
 
+        //Stub, compare two objects
         [TestMethod]
-        public void testWaterProducerOrder_jin_resiltjin()
+        public void testWaterProducerOrder_jin_resultjin()
         {
             
             Water waterJIN = new AlcoholicBeverage();
@@ -47,8 +49,9 @@ namespace ProjectTestMockOne_Test
 
         }
 
+        //Stub, compare two objects
         [TestMethod]
-        public void testWaterProducerOrder_JinFanta_resiltJinFanta()
+        public void testWaterProducerOrder_JinFanta_resultJin()
         {
 
             Water waterFanta = new SoftDrink();
@@ -72,14 +75,12 @@ namespace ProjectTestMockOne_Test
 
             Assert.AreEqual(JIN, jinResult.Name);
 
-            //Water fantaResult = waterProducer.order(FANTA);
-
-           // Assert.AreEqual(FANTA, fantaResult.Name);
 
         }
 
+        //Stub, compare two objects
         [TestMethod]
-        public void testWaterProducerOrder_anyValue_resiltjin()
+        public void testWaterProducerOrder_anyValue_resultjin()
         {
 
             Water waterJIN = new AlcoholicBeverage();
@@ -93,20 +94,18 @@ namespace ProjectTestMockOne_Test
 
         }
 
+        //Mock,verify call method (create(FANTA)) never
         [TestMethod]
-        public void testStubWaterProducerOrder_jin_resiltjin()
+        public void testVerifyCallNameCreate_fanta_resultNever()
         {
 
             Mock<Water> mockWater = new Mock<Water>();
 
             mockWater.Setup(water => water.Price).Returns(1000);
            
-           // mockWater.SetupProperty(water => water.Name, "jin");
-
             Mock<WaterStore> mockJin = new Mock<WaterStore>();
             mockJin.Setup(store => store.create(JIN)).Returns(mockWater.Object);
-
-
+            
             WaterProducer waterProducer = new WaterProducer();
             waterProducer.Stories.Add(JIN, mockJin.Object);
 
@@ -114,55 +113,52 @@ namespace ProjectTestMockOne_Test
 
             mockJin.Verify(store => store.create(FANTA), Times.Never());
            
-           // Assert.AreEqual(1000, mockWater.Object.Price);
+
+            //это пример того, как не следует осуществлять несколько проверок в один модульный тест.
+            //Эта проверка лишняя для модульного теста
+            Assert.AreEqual(1000, mockWater.Object.Price);
 
         }
 
         /**
-         * verify call method, never, at most ince
+         * Mock, verify call method (w.Price), never 
          * */
         [TestMethod]
-        public void testVerifyCallName_Never()
+        public void testVerifyCallNamePrice_Never()
         {
 
             Mock<Water> mockWater = new Mock<Water>();
 
             mockWater.Setup(water => water.Price).Returns(1000);
-
-            // mockWater.SetupProperty(water => water.Name, "jin");
-
+            
             Mock<WaterStore> mockJin = new Mock<WaterStore>();
             mockJin.Setup(store => store.create(JIN)).Returns(mockWater.Object);
-
-
+            
             WaterProducer waterProducer = new WaterProducer();
             waterProducer.Stories.Add(JIN, mockJin.Object);
 
             Water waterResult = waterProducer.order(JIN);
 
             mockWater.Verify(w => w.Price, Times.Never());
-            
-           // Assert.AreEqual(1000, mockWater.Object.Price);
+
 
         }
 
-        /**
-         * verify call method, never, at most ince
-         * */
+        
+        //Mock, verify call method, never, at most ince (store.create(JIN))
+        //т.е. хотя бы раз была вызвана функция store.create(JIN)         
         [TestMethod]
-        public void testVerifyCallName_MostOnce()
+        public void testVerifyCallNameCreate_JIN_MostOnce()
         {
 
             Mock<Water> mockWater = new Mock<Water>();
 
+            //эта строка не играет никакой роли в тесте, т.к. не явлется ее целью 
             mockWater.Setup(water => water.Price).Returns(1000);
-
-            // mockWater.SetupProperty(water => water.Name, "jin");
 
             Mock<WaterStore> mockJin = new Mock<WaterStore>();
             mockJin.Setup(store => store.create(JIN)).Returns(mockWater.Object);
-
-
+            
             WaterProducer waterProducer = new WaterProducer();
             waterProducer.Stories.Add(JIN, mockJin.Object);
 
@@ -170,38 +166,30 @@ namespace ProjectTestMockOne_Test
 
             mockJin.Verify(store => store.create(JIN), Times.AtMostOnce);
 
-            Assert.AreEqual(1000, mockWater.Object.Price);
-
-            
 
         }
 
-        //verify ALL (store.create(FANTA), water.Price)
+        //Mock, verify ALL registration functions  in Mock  (store.create(JIN), water.Price)
+        //Это не модульный тест, пример показывает возможности Mock
         [TestMethod]
-        public void testVerifyALLWaterProducerOrder_jin_resiltjin()
+        public void testVerifyALLWaterProducerOrder_jin_resultTrue()
         {
 
             var mockRepository = new MockRepository(MockBehavior.Strict);
             var mockWater = mockRepository.Create<Water>();
 
             mockWater.Setup(water => water.Price).Returns(1000);
-           // mockWater.SetupProperty(water => water.Name, "jin");
-
+          
             var mockJin = mockRepository.Create<WaterStore>(MockBehavior.Strict);
             mockJin.Setup(store => store.create(JIN)).Returns(mockWater.Object);
-
-
+            
             WaterProducer waterProducer = new WaterProducer();
             waterProducer.Stories.Add(JIN, mockJin.Object);
+                        
+            Water waterFanta = waterProducer.order(JIN);
 
-            Water waterResult = waterProducer.order(JIN);
-
-            mockJin.Verify(store => store.create(FANTA), Times.Never());
-
-           // Assert.AreEqual(1000, waterResult.Price);
-            
             mockRepository.VerifyAll();
             
         }
     }
-}
+  }
