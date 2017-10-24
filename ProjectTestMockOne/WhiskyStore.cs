@@ -15,7 +15,7 @@ namespace ProjectTestMockOne
             AlcoholicBeverage alkbeverage = new AlcoholicBeverage();
 
             alkbeverage.Name = name;
-            alkbeverage.Price = 1200;
+            alkbeverage.Price = 1500;
             alkbeverage.Abv = 40;
 
             return alkbeverage;
